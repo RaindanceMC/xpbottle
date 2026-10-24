@@ -1,0 +1,74 @@
+id: xpbottle
+title: XP Bottles
+summary: Put your experience into a bottle, carry it, throw it or pour it back — nothing lost on the way.
+intro: |
+  Experience you can <i>carry</i>, hand over and keep safe from death. Points in, the very same points out — I checked the maths twice, because I do not trust levels either.
+icon: EXPERIENCE_BOTTLE
+category: Progress & rewards
+order: 40
+module: xpbottle
+aliases: [xpb, xp, exp, experience, bottle, bottles, siphon]
+keywords: [levels, enchanting, orbs, store, points, glass, pour, throw, vacuum]
+commands: [xpbottle]
+sections:
+  - question: How do I bottle my experience?
+    title: Filling a bottle
+    when: xpbottle:plain.enabled
+    text: |
+      Hold an empty <white>glass bottle</white> and right-click <b>in the air</b>. Everything you are carrying goes into a <green>Bottled Experience</green> — a real bottle o' enchanting — up to {setting:xpbottle:plain.capacity|count} points. One bottle out of the stack per click.
+      Click at water, a cauldron or a beehive instead and you simply fill the glass bottle like always; I would never take your levels for a bit of water.
+  - question: Why is my bottle not full?
+    title: How much goes in
+    when: xpbottle:plain.enabled
+    text: |
+      A plain bottle holds {setting:xpbottle:plain.capacity|count} points. Have less than that and it takes all you have; have more and it takes a bottle's worth and leaves the rest where it was. Fill another one for the remainder.
+      It counts <white>points</white>, not levels — a level is worth more the higher you are, so a bottle of "one level" would give back something different. A bottle gives back exactly the points that went in, whatever level you are at when you pour it out.
+  - question: What does bottling cost?
+    title: Wait and fee
+    when: xpbottle:plain.enabled
+    text: |
+      {if:xpbottle:fill-cooldown-seconds > 0}After a bottling you wait {setting:xpbottle:fill-cooldown-seconds|seconds} before you can fill the next one — an impatient click just gets told how long is left.{else}There is no wait between bottlings; fill as many as you can carry.{/if}
+      {if:xpbottle:fee != 0}Every bottle costs {setting:xpbottle:fee|money}. It is taken before the bottle is made, and given back if the bottling falls through; if you cannot afford it, nothing is bottled and nothing is taken.{else}Bottling is free.{/if}
+      Nothing happens (and nothing is charged) if you have no experience to take or the bottle somehow could not be made.
+  - question: How do I get my experience back?
+    title: Pouring back
+    text: |
+      <b>Sneak and right-click</b> with the bottle in your hand. The points go straight back into you. A plain bottle is used up and leaves a glass bottle behind; a siphon bottle just empties and stays yours.
+      An empty bottle says so. Sneak-clicking is the only way to pour — plain right-clicking throws it, see below.
+  - question: What happens if I throw a bottle?
+    title: Throwing
+    text: |
+      A filled plain bottle is a real bottle o' enchanting: right-click without sneaking and it flies and breaks like one. Where vanilla would give you three to eleven points, it pays out <white>exactly what went into it</white> — as orbs where it lands, free for anybody standing nearby to pick up — so mind who is standing there.
+      Ordinary bottles o' enchanting, the ones you did not bottle yourself, behave like vanilla.
+  - question: What is a siphon bottle?
+    title: Siphon bottles
+    text: |
+      A potion-shaped bottle with a tier from I to {setting:xpbottle:siphon.highest-tier|count}. <b>Hold right-click down</b> and it pulls loose experience orbs off the ground around you, nearest first, at {setting:xpbottle:siphon.points-per-second|count} points per second. Let go to stop.
+      A tier I siphon holds {setting:xpbottle:siphon.capacity-base|count} points and reaches {setting:xpbottle:siphon.reach-base|count} blocks. Every tier above adds {setting:xpbottle:siphon.capacity-per-tier|count} points and {setting:xpbottle:siphon.reach-per-tier|count} blocks (the reach never exceeds 32). Its colour fills as it does.
+      Not a single orb in reach? It draws from <i>your own</i> experience instead — same speed, same bottle. A big orb that does not fit is reduced, not swallowed: nothing is destroyed.
+      Siphons are free to use: no fee, no wait between draws. And you cannot swallow one — it only <i>looks</i> like a potion.
+  - question: What if I stop mid-draw?
+    title: Stopping a draw
+    text: |
+      What a siphon has pulled in is written into the bottle when you let go, when it is full, when you switch hotbar slot, swap hands, drop it or log out. If the bottle is no longer in your hand, the points go back into <i>you</i> — I do not let experience vanish.
+      A full siphon tells you so; empty it first with a sneak and a right-click.
+  - question: Where do I get a siphon bottle?
+    title: Getting one
+    text: |
+      They cannot be crafted — staff give them out, so ask nicely. The page that {cmd:/xpbottle} opens shows every tier this server has: what each holds and how far it reaches.
+  - question: What does /xpbottle do?
+    title: The /xpbottle page
+    permission: rainsxpbottles.menu
+    text: |
+      {run:/xpbottle} (or {cmd:/xpb}) opens a page with the experience you carry, what a plain bottle holds, the wait between bottlings and every siphon tier with its capacity and reach. Only a player can open it, standing in the world.
+  - question: What may I not do?
+    title: Permissions
+    text: |
+      Each part has its own permission: <white>rainsxpbottles.bottle.fill</white> (fill a plain bottle — without it the glass bottle simply behaves like glass), <white>rainsxpbottles.bottle.pour</white>, <white>rainsxpbottles.siphon.use</white> and <white>rainsxpbottles.menu</white>. Everybody has them unless staff took them away.
+      {if:!xpbottle:plain.enabled}On this server plain glass bottles are left entirely vanilla; only siphon bottles do anything.{/if}
+  - question: How do I give somebody a siphon?
+    title: Giving siphons
+    permission: rainsxpbottles.give
+    text: |
+      {cmd:/xpbottle give <player> [tier]} puts an empty siphon bottle into the player's inventory (or at their feet if it is full). The tier defaults to I and goes up to {setting:xpbottle:siphon.highest-tier|count}. The player must be online; a selector such as @a works if you may use it. Opening {run:/xpbottle} and clicking a tier gives <i>you</i> one.
+      Raising the highest tier in {run:/settings} creates the new tiers at once, with capacity and reach from the base and the step.
